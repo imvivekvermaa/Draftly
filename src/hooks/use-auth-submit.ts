@@ -6,6 +6,7 @@ import { useCallback, useState } from "react";
 import { checkAccountExists } from "@/lib/api/auth-client";
 import {
   buildFeedback,
+  isRateLimitCode,
   SUPABASE_ERROR_CODE,
   type AuthFeedback,
 } from "@/lib/auth/auth-feedback";
@@ -49,6 +50,10 @@ export function useAuthSubmit(mode: AuthMode): UseAuthSubmitResult {
         return setFeedback(buildFeedback("unconfirmed"));
       }
 
+      if (isRateLimitCode(error.code)) {
+        return setFeedback(buildFeedback("rate_limited"));
+      }
+
       if (error.code === SUPABASE_ERROR_CODE.invalidCredentials) {
         try {
           const exists = await checkAccountExists(email);
@@ -71,11 +76,16 @@ export function useAuthSubmit(mode: AuthMode): UseAuthSubmitResult {
       const { data, error } = await supabase.auth.signUp({ email, password });
 
       if (error) {
-        const kind =
-          error.code === SUPABASE_ERROR_CODE.userAlreadyExists
-            ? "account_exists"
-            : "generic";
-        return setFeedback(buildFeedback(kind));
+        if (error.code === SUPABASE_ERROR_CODE.userAlreadyExists) {
+          return setFeedback(buildFeedback("account_exists"));
+        }
+        if (error.code === SUPABASE_ERROR_CODE.weakPassword) {
+          return setFeedback(buildFeedback("weak_password"));
+        }
+        if (isRateLimitCode(error.code)) {
+          return setFeedback(buildFeedback("rate_limited"));
+        }
+        return setFeedback(buildFeedback("generic"));
       }
 
       // With email confirmation on, Supabase obscures an existing email by

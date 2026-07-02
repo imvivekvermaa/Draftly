@@ -69,13 +69,19 @@ export function useContentGeneration(): UseContentGenerationResult {
         setResult(null);
         return saved;
       } catch (error) {
-        applyError(error);
+        // Save has no per-field UI, so surface everything as a general message
+        // (rather than silently setting field errors that are never rendered).
+        setGeneralError(
+          error instanceof ApiRequestError
+            ? error.message
+            : "Something went wrong. Please try again.",
+        );
         return null;
       } finally {
         setIsSaving(false);
       }
     },
-    [applyError, result],
+    [result],
   );
 
   const clearResult = useCallback(() => setResult(null), []);

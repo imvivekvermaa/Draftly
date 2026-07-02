@@ -69,7 +69,12 @@ export function GenerationForm({
         />
       </FormField>
 
-      <Button type="submit" isLoading={isGenerating} className="self-start">
+      <Button
+        type="submit"
+        isLoading={isGenerating}
+        disabled={topic.trim().length < 3}
+        className="self-start"
+      >
         {isGenerating ? "Generating..." : "Generate"}
       </Button>
     </form>

@@ -8,6 +8,8 @@ export type AuthFeedbackKind =
   | "no_account"
   | "unconfirmed"
   | "account_exists"
+  | "weak_password"
+  | "rate_limited"
   | "check_email"
   | "generic";
 
@@ -38,6 +40,14 @@ const FEEDBACK: Record<AuthFeedbackKind, Omit<AuthFeedback, "kind">> = {
     tone: "info",
     message: "An account with this email already exists.",
   },
+  weak_password: {
+    tone: "error",
+    message: "Please choose a stronger password (at least 6 characters).",
+  },
+  rate_limited: {
+    tone: "error",
+    message: "Too many attempts. Please wait a moment and try again.",
+  },
   check_email: {
     tone: "success",
     message: "Account created — check your inbox to confirm, then sign in.",
@@ -57,4 +67,15 @@ export const SUPABASE_ERROR_CODE = {
   invalidCredentials: "invalid_credentials",
   emailNotConfirmed: "email_not_confirmed",
   userAlreadyExists: "user_already_exists",
+  weakPassword: "weak_password",
+  overEmailRateLimit: "over_email_send_rate_limit",
+  overRequestRateLimit: "over_request_rate_limit",
 } as const;
+
+/** True when the error is one of Supabase's rate-limit codes. */
+export function isRateLimitCode(code: string | undefined): boolean {
+  return (
+    code === SUPABASE_ERROR_CODE.overEmailRateLimit ||
+    code === SUPABASE_ERROR_CODE.overRequestRateLimit
+  );
+}

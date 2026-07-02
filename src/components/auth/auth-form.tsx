@@ -9,6 +9,7 @@ import { Card, CardHeader } from "@/components/ui/card";
 import { FormField } from "@/components/ui/form-field";
 import { TextInput } from "@/components/ui/text-input";
 import { useAuthSubmit } from "@/hooks/use-auth-submit";
+import { credentialsSchema } from "@/lib/validation/auth-schemas";
 
 type AuthMode = "login" | "register";
 
@@ -46,10 +47,45 @@ export function AuthForm({ mode, initialEmail = "" }: AuthFormProps) {
   const { submit, isSubmitting, feedback } = useAuthSubmit(mode);
   const [email, setEmail] = useState(initialEmail);
   const [password, setPassword] = useState("");
+  const [fieldErrors, setFieldErrors] = useState<{
+    email?: string;
+    password?: string;
+  }>({});
 
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
-    await submit(email, password);
+
+    // Validate on the client so empty/short/malformed input gets a clear
+    // per-field message instead of a generic error from Supabase.
+    const parsed = credentialsSchema.safeParse({ email, password });
+    if (!parsed.success) {
+      const errors: { email?: string; password?: string } = {};
+      for (const issue of parsed.error.issues) {
+        const key = issue.path[0];
+        if ((key === "email" || key === "password") && !errors[key]) {
+          errors[key] = issue.message;
+        }
+      }
+      setFieldErrors(errors);
+      return;
+    }
+
+    setFieldErrors({});
+    await submit(parsed.data.email, parsed.data.password);
+  }
+
+  function handleEmailChange(value: string) {
+    setEmail(value);
+    if (fieldErrors.email) {
+      setFieldErrors((prev) => ({ ...prev, email: undefined }));
+    }
+  }
+
+  function handlePasswordChange(value: string) {
+    setPassword(value);
+    if (fieldErrors.password) {
+      setFieldErrors((prev) => ({ ...prev, password: undefined }));
+    }
   }
 
   const emailParam = email ? `?email=${encodeURIComponent(email)}` : "";
@@ -67,18 +103,22 @@ export function AuthForm({ mode, initialEmail = "" }: AuthFormProps) {
       <Card>
         <CardHeader title={copy.title} />
         <form onSubmit={handleSubmit} className="flex flex-col gap-4" noValidate>
-          <FormField label="Email" htmlFor="email">
+          <FormField label="Email" htmlFor="email" error={fieldErrors.email}>
             <TextInput
               id="email"
               type="email"
               autoComplete="email"
               required
               value={email}
-              onChange={(event) => setEmail(event.target.value)}
+              onChange={(event) => handleEmailChange(event.target.value)}
               placeholder="you@example.com"
             />
           </FormField>
-          <FormField label="Password" htmlFor="password">
+          <FormField
+            label="Password"
+            htmlFor="password"
+            error={fieldErrors.password}
+          >
             <TextInput
               id="password"
               type="password"
@@ -86,7 +126,7 @@ export function AuthForm({ mode, initialEmail = "" }: AuthFormProps) {
               required
               minLength={6}
               value={password}
-              onChange={(event) => setPassword(event.target.value)}
+              onChange={(event) => handlePasswordChange(event.target.value)}
               placeholder="At least 6 characters"
             />
           </FormField>
