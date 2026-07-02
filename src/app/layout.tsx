@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "AI Content Assistant",
+  title: "Draftly — AI Content Assistant",
   description: "Generate, save, and revisit AI-powered content.",
 };
 
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
 const themeBootScript = `
 (function () {
   try {
-    var stored = localStorage.getItem('ai-assistant-theme');
+    var stored = localStorage.getItem('draftly-theme');
     var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
     var theme = stored || (prefersDark ? 'dark' : 'light');
     document.documentElement.classList.toggle('dark', theme === 'dark');

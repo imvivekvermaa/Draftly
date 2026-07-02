@@ -4,7 +4,7 @@ import { DashboardHeader } from "@/components/dashboard/dashboard-header";
 import { DashboardView } from "@/components/dashboard/dashboard-view";
 import { getAuthenticatedUser } from "@/lib/auth/require-user";
 
-export const metadata = { title: "Dashboard · AI Content Assistant" };
+export const metadata = { title: "Dashboard · Draftly" };
 
 /**
  * Protected dashboard. Middleware already guards this route; we re-check the

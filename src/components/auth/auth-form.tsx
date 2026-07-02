@@ -55,49 +55,59 @@ export function AuthForm({ mode, initialEmail = "" }: AuthFormProps) {
   const emailParam = email ? `?email=${encodeURIComponent(email)}` : "";
 
   return (
-    <Card className="w-full max-w-sm">
-      <CardHeader title={copy.title} description="AI Content Assistant" />
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4" noValidate>
-        <FormField label="Email" htmlFor="email">
-          <TextInput
-            id="email"
-            type="email"
-            autoComplete="email"
-            required
-            value={email}
-            onChange={(event) => setEmail(event.target.value)}
-            placeholder="you@example.com"
-          />
-        </FormField>
-        <FormField label="Password" htmlFor="password">
-          <TextInput
-            id="password"
-            type="password"
-            autoComplete={mode === "login" ? "current-password" : "new-password"}
-            required
-            minLength={6}
-            value={password}
-            onChange={(event) => setPassword(event.target.value)}
-            placeholder="At least 6 characters"
-          />
-        </FormField>
+    <div className="w-full max-w-sm">
+      <div className="mb-6 text-center">
+        <h1 className="text-2xl font-bold tracking-tight text-neutral-900 dark:text-neutral-50">
+          Draftly
+        </h1>
+        <p className="mt-1 text-sm text-neutral-500 dark:text-neutral-400">
+          AI Content Assistant
+        </p>
+      </div>
+      <Card>
+        <CardHeader title={copy.title} />
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4" noValidate>
+          <FormField label="Email" htmlFor="email">
+            <TextInput
+              id="email"
+              type="email"
+              autoComplete="email"
+              required
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
+              placeholder="you@example.com"
+            />
+          </FormField>
+          <FormField label="Password" htmlFor="password">
+            <TextInput
+              id="password"
+              type="password"
+              autoComplete={mode === "login" ? "current-password" : "new-password"}
+              required
+              minLength={6}
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
+              placeholder="At least 6 characters"
+            />
+          </FormField>
 
-        {feedback && <AuthFeedbackBanner feedback={feedback} email={email} />}
+          {feedback && <AuthFeedbackBanner feedback={feedback} email={email} />}
 
-        <Button type="submit" isLoading={isSubmitting}>
-          {copy.action}
-        </Button>
-      </form>
+          <Button type="submit" isLoading={isSubmitting}>
+            {copy.action}
+          </Button>
+        </form>
 
-      <p className="mt-4 text-center text-sm text-neutral-500 dark:text-neutral-400">
-        {copy.prompt}{" "}
-        <Link
-          href={`${copy.linkHref}${emailParam}`}
-          className="font-medium underline"
-        >
-          {copy.linkLabel}
-        </Link>
-      </p>
-    </Card>
+        <p className="mt-4 text-center text-sm text-neutral-500 dark:text-neutral-400">
+          {copy.prompt}{" "}
+          <Link
+            href={`${copy.linkHref}${emailParam}`}
+            className="font-medium underline"
+          >
+            {copy.linkLabel}
+          </Link>
+        </p>
+      </Card>
+    </div>
   );
 }

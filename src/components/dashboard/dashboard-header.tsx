@@ -8,7 +8,7 @@ export function DashboardHeader({ email }: { email: string }) {
       <div className="mx-auto flex max-w-4xl flex-wrap items-center justify-between gap-3 px-4 py-4">
         <div>
           <h1 className="text-lg font-semibold text-neutral-900 dark:text-neutral-50">
-            AI Content Assistant
+            Draftly
           </h1>
           <p className="text-xs text-neutral-500 dark:text-neutral-400">
             {email}

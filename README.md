@@ -1,4 +1,4 @@
-# Mini AI Content Assistant Dashboard
+# Draftly — AI Content Assistant
 
 A full-stack app where an authenticated user generates AI-powered content,
 saves it, and revisits their history. Built with **Next.js 16 (App Router)**,

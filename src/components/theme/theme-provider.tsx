@@ -17,8 +17,8 @@ interface ThemeContextValue {
 
 const ThemeContext = createContext<ThemeContextValue | null>(null);
 
-export const THEME_STORAGE_KEY = "ai-assistant-theme";
-const THEME_CHANGE_EVENT = "ai-assistant-theme-change";
+export const THEME_STORAGE_KEY = "draftly-theme";
+const THEME_CHANGE_EVENT = "draftly-theme-change";
 
 /**
  * The theme lives on the <html> `.dark` class (set pre-paint by the boot

@@ -1,6 +1,6 @@
 import { AuthForm } from "@/components/auth/auth-form";
 
-export const metadata = { title: "Sign in · AI Content Assistant" };
+export const metadata = { title: "Sign in · Draftly" };
 
 /** `searchParams` carries an optional `email` to pre-fill (from the sign-up link). */
 export default async function LoginPage({

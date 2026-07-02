@@ -1,6 +1,6 @@
 # Architecture
 
-How the Mini AI Content Assistant is built and why. For scope and acceptance
+How Draftly (an AI Content Assistant) is built and why. For scope and acceptance
 criteria see [`spec/1.0-foundation.md`](./spec/1.0-foundation.md); for setup see
 [`README.md`](./README.md).
 

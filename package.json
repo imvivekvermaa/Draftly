@@ -1,7 +1,8 @@
 {
-  "name": "ai-content-assistant",
+  "name": "draftly",
   "version": "0.1.0",
   "private": true,
+  "description": "Draftly — AI Content Assistant",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
