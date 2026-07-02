@@ -9,9 +9,12 @@ saves it, and revisits their history. Built with **Next.js 16 (App Router)**,
 
 ## Features
 
-- Email/password auth (Supabase Auth) with protected routes
+- Email/password auth (Supabase Auth) with protected routes and client-side
+  credential validation
 - Generate content by **type**, **tone**, and **topic** via OpenAI
-- Save results and view a per-user **history** (newest first)
+- Save results and browse a per-user **history** (newest first)
+- Open any saved draft in a **modal** to read it in full, and **delete** drafts
+  with a confirmation step
 - Dark / light mode (persisted, no flash), copy-to-clipboard, export to `.txt`
 - End-to-end type safety, Zod validation, and consistent API error responses
 
@@ -109,7 +112,10 @@ Open http://localhost:3000 — you'll be redirected to `/login`.
    and click **Generate**.
 3. Review the result — **Copy**, **Export**, **Save to history**, or **Discard**.
 4. Saved items appear instantly in **History** and persist across reloads.
-5. Toggle **dark/light** from the header; **Sign out** to end the session.
+5. **Click any history card** to read the full draft in a modal (Copy/Export are
+   available inside too). Use the **🗑 delete** button — on the card or in the
+   modal — to remove a draft after confirming.
+6. Toggle **dark/light** from the header; **Sign out** to end the session.
 
 ## Scripts
 
@@ -128,8 +134,14 @@ Open http://localhost:3000 — you'll be redirected to `/login`.
 1. Push the repo to GitHub and import it in Vercel.
 2. Add the four env vars from `.env.local` to the Vercel project settings.
 3. Ensure the database has been migrated (`npm run db:migrate`).
-4. Deploy, then add your deployment URL under **Supabase → Authentication → URL
-   Configuration** so auth redirects resolve correctly.
+4. Deploy, then in **Supabase → Authentication → URL Configuration** set the
+   **Site URL** to your deployment URL and add it (plus `http://localhost:3000`)
+   to **Redirect URLs**, so confirmation/redirect links resolve correctly.
+
+> **Email confirmation in production:** Supabase's built-in email sender is
+> rate-limited (a few messages/hour) and meant only for testing. For real
+> signups, either turn off "Confirm email" (Authentication → Providers → Email)
+> or configure **custom SMTP** (e.g. Resend) and raise the email rate limit.
 
 ## Project structure
 

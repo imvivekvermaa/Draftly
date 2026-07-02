@@ -49,7 +49,16 @@ Supabase Postgres  (data)                Supabase Auth  (cookie sessions)
 
 ### History
 `GET /api/content` returns the user's rows (newest first), read through the
-`(user_id, created_at desc)` index.
+`(user_id, created_at desc)` index. Clicking a card opens the full draft in a
+modal (`components/ui/modal.tsx`, a portal-based dialog).
+
+### Delete
+1. From a history card — or the open-draft modal — the user confirms in a
+   second, stacked confirmation dialog.
+2. `useContentHistory.deleteRecord` calls `DELETE /api/content/[id]`.
+3. The route deletes the row scoped to its owner (`id` **and** `user_id`),
+   returns `404` when nothing matches, and the hook drops it from the list only
+   after the server confirms.
 
 ## 4. Authentication & authorization
 - **Sessions:** `@supabase/ssr` stores the session in cookies. `proxy.ts`
@@ -80,12 +89,17 @@ useless on serverless, so it was deliberately left out.
 
 ## 5. Validation & error handling
 - **Zod** schemas in `lib/validation` are the single source of truth for input
-  shape, shared by the generate and save endpoints.
+  shape — shared by the generate/save endpoints and the delete route's id check,
+  and re-used on the client to validate credentials before calling Supabase.
 - All API responses use one envelope (`lib/api/api-response.ts`): `{ data }` on
-  success, `{ error: { code, message, fields? } }` on failure, with codes mapped
-  to HTTP status.
+  success, `{ error: { code, message, fields? } }` on failure, with codes
+  (`VALIDATION_ERROR`, `UNAUTHORIZED`, `NOT_FOUND`, `AI_PROVIDER_ERROR`,
+  `DATABASE_ERROR`, `INTERNAL_ERROR`) mapped to HTTP status.
 - The browser client throws a typed `ApiRequestError`; the generation hook maps
   `VALIDATION_ERROR` to per-field messages and everything else to a banner.
+- Supabase auth errors are mapped to specific, friendly messages (wrong
+  password, unconfirmed email, weak password, rate limited, …) rather than a
+  single generic fallback.
 - AI failures are wrapped in `AiProviderError` → surfaced as a retryable 502.
 
 ## 6. Project structure
@@ -98,8 +112,10 @@ src/
     api/
       generate/                  # POST — generate content (auth required)
       content/                   # POST save + GET history (auth required)
+      content/[id]/              # DELETE — remove a saved draft (owner-scoped)
       auth/account-exists/       # POST — public sign-in UX helper
   components/{ui,auth,dashboard,theme}/   # reusable, presentational-first
+                                 #   ui/modal.tsx — portal dialog (read + confirm)
   hooks/                         # generation & history state
   db/                            # Drizzle schema, client, queries
   lib/{ai,api,auth,validation,supabase,constants,utils}/
