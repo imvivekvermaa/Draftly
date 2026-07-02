@@ -7,10 +7,16 @@ interface HistoryListProps {
   history: ContentRecord[];
   isLoading: boolean;
   error: string | null;
+  onDelete: (id: string) => Promise<void>;
 }
 
 /** Renders the user's saved content history with loading/empty/error states. */
-export function HistoryList({ history, isLoading, error }: HistoryListProps) {
+export function HistoryList({
+  history,
+  isLoading,
+  error,
+  onDelete,
+}: HistoryListProps) {
   return (
     <Card>
       <CardHeader
@@ -33,7 +39,7 @@ export function HistoryList({ history, isLoading, error }: HistoryListProps) {
       ) : (
         <ul className="flex flex-col gap-3">
           {history.map((record) => (
-            <HistoryItem key={record.id} record={record} />
+            <HistoryItem key={record.id} record={record} onDelete={onDelete} />
           ))}
         </ul>
       )}

@@ -28,3 +28,8 @@ export async function fetchHistory(): Promise<ContentRecord[]> {
   const response = await fetch("/api/content", { method: "GET" });
   return parseApiResponse<ContentRecord[]>(response);
 }
+
+export async function deleteContent(id: string): Promise<void> {
+  const response = await fetch(`/api/content/${id}`, { method: "DELETE" });
+  await parseApiResponse<{ id: string }>(response);
+}

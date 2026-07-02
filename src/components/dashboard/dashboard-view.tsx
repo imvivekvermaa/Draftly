@@ -68,6 +68,7 @@ export function DashboardView() {
         history={history.history}
         isLoading={history.isLoading}
         error={history.error}
+        onDelete={history.deleteRecord}
       />
     </div>
   );

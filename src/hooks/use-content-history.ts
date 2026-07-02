@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 
-import { fetchHistory } from "@/lib/api/content-client";
+import { deleteContent, fetchHistory } from "@/lib/api/content-client";
 import type { ContentRecord } from "@/lib/types/content";
 
 const LOAD_ERROR_MESSAGE = "Could not load your history. Please refresh.";
@@ -13,6 +13,7 @@ interface UseContentHistoryResult {
   error: string | null;
   reload: () => Promise<void>;
   prependRecord: (record: ContentRecord) => void;
+  deleteRecord: (id: string) => Promise<void>;
 }
 
 /**
@@ -60,5 +61,12 @@ export function useContentHistory(): UseContentHistoryResult {
     setHistory((current) => [record, ...current]);
   }, []);
 
-  return { history, isLoading, error, reload, prependRecord };
+  // Deletes on the server first, then drops the row locally. Throws on failure
+  // so the caller can surface an error and keep the item in place.
+  const deleteRecord = useCallback(async (id: string) => {
+    await deleteContent(id);
+    setHistory((current) => current.filter((record) => record.id !== id));
+  }, []);
+
+  return { history, isLoading, error, reload, prependRecord, deleteRecord };
 }

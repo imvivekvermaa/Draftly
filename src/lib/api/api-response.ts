@@ -8,6 +8,7 @@ import { z } from "zod";
 export type ApiErrorCode =
   | "VALIDATION_ERROR"
   | "UNAUTHORIZED"
+  | "NOT_FOUND"
   | "AI_PROVIDER_ERROR"
   | "DATABASE_ERROR"
   | "INTERNAL_ERROR";
@@ -24,6 +25,7 @@ interface ApiErrorBody {
 const STATUS_BY_CODE: Record<ApiErrorCode, number> = {
   VALIDATION_ERROR: 422,
   UNAUTHORIZED: 401,
+  NOT_FOUND: 404,
   AI_PROVIDER_ERROR: 502,
   DATABASE_ERROR: 500,
   INTERNAL_ERROR: 500,

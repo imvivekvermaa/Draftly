@@ -36,5 +36,8 @@ export const saveContentSchema = generateContentSchema.extend({
     .max(20000, "Output is unexpectedly large"),
 });
 
+/** A saved content record id, as it appears in the DELETE route param. */
+export const contentIdSchema = z.string().uuid("Invalid content id");
+
 export type GenerateContentInput = z.infer<typeof generateContentSchema>;
 export type SaveContentInput = z.infer<typeof saveContentSchema>;

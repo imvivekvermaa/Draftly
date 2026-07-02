@@ -1,4 +1,4 @@
-import { desc, eq } from "drizzle-orm";
+import { and, desc, eq } from "drizzle-orm";
 
 import { db } from "@/db/client";
 import { contents, profiles, type ContentRow } from "@/db/schema";
@@ -52,4 +52,21 @@ export async function listContentByUser(
     .from(contents)
     .where(eq(contents.userId, userId))
     .orderBy(desc(contents.createdAt));
+}
+
+/**
+ * Deletes a single content record, scoped to its owner so a user can only ever
+ * delete their own rows. Returns `true` when a row was removed, `false` when no
+ * matching row exists (unknown id, or not owned by this user).
+ */
+export async function deleteContentForUser(
+  userId: string,
+  contentId: string,
+): Promise<boolean> {
+  const deleted = await db
+    .delete(contents)
+    .where(and(eq(contents.id, contentId), eq(contents.userId, userId)))
+    .returning({ id: contents.id });
+
+  return deleted.length > 0;
 }
