@@ -7,6 +7,19 @@ saves it, and revisits their history. Built with **Next.js 16 (App Router)**,
 - **What it does & acceptance criteria:** [`spec/1.0-foundation.md`](./spec/1.0-foundation.md)
 - **How it's built & why:** [`ARCHITECTURE.md`](./ARCHITECTURE.md)
 
+## Live demo
+
+**▶ https://draftly-phi.vercel.app/**
+
+Sign in with the shared demo account (or register your own):
+
+| Field | Value |
+| --- | --- |
+| Email | `imvivekvermaa@gmail.com` |
+| Password | `Vivek@123` |
+
+> These are throwaway demo credentials for evaluation only.
+
 ## Features
 
 - Email/password auth (Supabase Auth) with protected routes and client-side
