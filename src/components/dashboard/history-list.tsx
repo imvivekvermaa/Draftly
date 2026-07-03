@@ -1,5 +1,6 @@
 import { Card, CardHeader } from "@/components/ui/card";
 import { Spinner } from "@/components/ui/spinner";
+import { cn } from "@/lib/utils/cn";
 import type { ContentRecord } from "@/lib/types/content";
 import { HistoryItem } from "./history-item";
 
@@ -8,6 +9,7 @@ interface HistoryListProps {
   isLoading: boolean;
   error: string | null;
   onDelete: (id: string) => Promise<void>;
+  className?: string;
 }
 
 /** Renders the user's saved content history with loading/empty/error states. */
@@ -16,9 +18,10 @@ export function HistoryList({
   isLoading,
   error,
   onDelete,
+  className,
 }: HistoryListProps) {
   return (
-    <Card>
+    <Card className={cn(className)}>
       <CardHeader
         title="History"
         description="Your previously generated and saved content"

@@ -5,7 +5,7 @@ import { useState, type FormEvent } from "react";
 
 import { AuthFeedbackBanner } from "@/components/auth/auth-feedback-banner";
 import { Button } from "@/components/ui/button";
-import { Card, CardHeader } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { FormField } from "@/components/ui/form-field";
 import { TextInput } from "@/components/ui/text-input";
 import { useAuthSubmit } from "@/hooks/use-auth-submit";
@@ -91,17 +91,20 @@ export function AuthForm({ mode, initialEmail = "" }: AuthFormProps) {
   const emailParam = email ? `?email=${encodeURIComponent(email)}` : "";
 
   return (
-    <div className="w-full max-w-sm">
-      <div className="mb-6 text-center">
-        <h1 className="text-2xl font-bold tracking-tight text-neutral-900 dark:text-neutral-50">
-          Draftly
-        </h1>
-        <p className="mt-1 text-sm text-neutral-500 dark:text-neutral-400">
-          AI Content Assistant
-        </p>
-      </div>
-      <Card>
-        <CardHeader title={copy.title} />
+    <div className="w-full max-w-[24rem]">
+      <Card className="rounded-lg border-neutral-950/10 bg-white/[0.92] p-5 shadow-[0_24px_80px_rgba(10,20,30,0.18)] backdrop-blur-md dark:border-white/10 dark:bg-neutral-900/[0.92] dark:shadow-[0_24px_80px_rgba(0,0,0,0.45)]">
+        <div className="mb-5">
+          <p className="text-xs font-semibold uppercase tracking-normal text-neutral-600 dark:text-neutral-400">
+            Draftly access
+          </p>
+          <h2 className="mt-2 text-3xl font-black tracking-normal text-neutral-950 dark:text-neutral-50">
+            {copy.title}
+          </h2>
+          <p className="mt-2 text-sm leading-6 text-neutral-600 dark:text-neutral-300">
+            Enter your credentials to access your account.
+          </p>
+        </div>
+
         <form onSubmit={handleSubmit} className="flex flex-col gap-4" noValidate>
           <FormField label="Email" htmlFor="email" error={fieldErrors.email}>
             <TextInput
@@ -112,6 +115,7 @@ export function AuthForm({ mode, initialEmail = "" }: AuthFormProps) {
               value={email}
               onChange={(event) => handleEmailChange(event.target.value)}
               placeholder="you@example.com"
+              className="border-neutral-300 bg-white text-neutral-950 focus:border-neutral-950 dark:border-neutral-700 dark:bg-neutral-950 dark:text-neutral-50 dark:focus:border-neutral-50"
             />
           </FormField>
           <FormField
@@ -128,21 +132,26 @@ export function AuthForm({ mode, initialEmail = "" }: AuthFormProps) {
               value={password}
               onChange={(event) => handlePasswordChange(event.target.value)}
               placeholder="At least 6 characters"
+              className="border-neutral-300 bg-white text-neutral-950 focus:border-neutral-950 dark:border-neutral-700 dark:bg-neutral-950 dark:text-neutral-50 dark:focus:border-neutral-50"
             />
           </FormField>
 
           {feedback && <AuthFeedbackBanner feedback={feedback} email={email} />}
 
-          <Button type="submit" isLoading={isSubmitting}>
+          <Button
+            type="submit"
+            isLoading={isSubmitting}
+            className="mt-1 bg-neutral-950 text-white hover:bg-neutral-800 dark:bg-white dark:text-neutral-950 dark:hover:bg-neutral-200"
+          >
             {copy.action}
           </Button>
         </form>
 
-        <p className="mt-4 text-center text-sm text-neutral-500 dark:text-neutral-400">
+        <p className="mt-4 text-center text-sm text-neutral-600 dark:text-neutral-300">
           {copy.prompt}{" "}
           <Link
             href={`${copy.linkHref}${emailParam}`}
-            className="font-medium underline"
+            className="font-semibold text-neutral-950 underline dark:text-neutral-50"
           >
             {copy.linkLabel}
           </Link>

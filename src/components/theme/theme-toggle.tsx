@@ -10,9 +10,9 @@ export function ThemeToggle() {
 
   return (
     <Button
-      variant="secondary"
       onClick={toggleTheme}
       aria-label={`Switch to ${isDark ? "light" : "dark"} mode`}
+      className="bg-neutral-950 text-white hover:bg-neutral-800 dark:bg-white dark:text-neutral-950 dark:hover:bg-neutral-200"
     >
       {isDark ? "☀️ Light" : "🌙 Dark"}
     </Button>

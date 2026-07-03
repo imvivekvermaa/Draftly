@@ -12,3 +12,65 @@
 html {
   color-scheme: light dark;
 }
+
+.auth-reveal-overlay {
+  animation: auth-reveal 3s cubic-bezier(0.82, 0, 0.12, 1) forwards;
+  will-change: transform;
+}
+
+.auth-content-layer {
+  animation: auth-content-reveal 280ms ease-out 2s forwards;
+  opacity: 0;
+}
+
+.dashboard-result-enter {
+  animation: dashboard-result-enter 180ms ease-out;
+}
+
+@keyframes auth-reveal {
+  0% {
+    transform: translateY(0);
+  }
+
+  100% {
+    transform: translateY(-105%);
+  }
+}
+
+@keyframes auth-content-reveal {
+  0% {
+    opacity: 0;
+    transform: translateY(0.5rem);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes dashboard-result-enter {
+  0% {
+    opacity: 0;
+    transform: translateY(0.5rem);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .auth-reveal-overlay {
+    animation-duration: 1ms;
+  }
+
+  .auth-content-layer {
+    animation-duration: 1ms;
+  }
+
+  .dashboard-result-enter {
+    animation-duration: 1ms;
+  }
+}

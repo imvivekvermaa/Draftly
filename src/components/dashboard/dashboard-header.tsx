@@ -5,9 +5,9 @@ import { ThemeToggle } from "@/components/theme/theme-toggle";
 export function DashboardHeader({ email }: { email: string }) {
   return (
     <header className="border-b border-neutral-200 dark:border-neutral-800">
-      <div className="mx-auto flex max-w-4xl flex-wrap items-center justify-between gap-3 px-4 py-4">
+      <div className="flex flex-wrap items-start justify-between gap-3 px-5 py-5 sm:px-8">
         <div>
-          <h1 className="text-lg font-semibold text-neutral-900 dark:text-neutral-50">
+          <h1 className="text-3xl font-black leading-none tracking-normal text-neutral-950 dark:text-neutral-50">
             Draftly
           </h1>
           <p className="text-xs text-neutral-500 dark:text-neutral-400">
