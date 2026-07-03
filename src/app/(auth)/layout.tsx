@@ -19,7 +19,7 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
         aria-hidden="true"
         className="pointer-events-none absolute inset-x-0 bottom-8 z-30 flex select-none flex-col items-center px-4 text-center mix-blend-difference"
       >
-        <h1 className="text-[29vw] font-black leading-[0.72] tracking-normal text-white sm:text-[21vw]">
+        <h1 className="text-[27vw] font-black leading-[0.72] tracking-normal text-white sm:text-[22vw]">
           Draftly
         </h1>
         <p className="mt-3 whitespace-nowrap text-[clamp(0.78rem,2.7vw,1rem)] font-medium leading-6 text-white">
